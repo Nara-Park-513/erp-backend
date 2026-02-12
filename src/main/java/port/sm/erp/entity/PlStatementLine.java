@@ -11,11 +11,7 @@ import javax.persistence.*;
                 @UniqueConstraint(name = "UK_PL_LINE", columnNames = {"STATEMENT_ID", "PL_ITEM"})
         }
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class PlStatementLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

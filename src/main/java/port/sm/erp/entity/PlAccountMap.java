@@ -11,12 +11,8 @@ import javax.persistence.*;
                 @UniqueConstraint(name = "UK_PL_ACCT", columnNames = {"ACCOUNT_CODE"})
         }
 )
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class PlAccountMap {
 
     @Id

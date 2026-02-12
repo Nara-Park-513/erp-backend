@@ -12,9 +12,7 @@ import javax.persistence.*;
                 @Index(name = "IDX_TRDL_ITEM", columnList = "ITEM_ID")
         }
 )
-
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,17 +22,17 @@ public class TradeLine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //헤더 기존 entity 재사용
+    //헤더 기존 엔티티 재사용
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TRADE_ID", nullable = false)
+    @JoinColumn(name ="TRADE_ID", nullable = false)
     private Trade trade;
 
-    //품목 기존 item 재사용
+    //품목(기존 item 재사용)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "iTEM_ID", nullable = false)
+    @JoinColumn(name ="ITEM_ID", nullable = false)
     private Item item;
 
-    //수량 단가 금액
+    //수량/단가/금액
     @Column(name = "QTY", nullable = false)
     private Long qty;
 
@@ -52,4 +50,7 @@ public class TradeLine {
 
     @Column(name = "REMARK", length = 255)
     private String remark;
-    }
+
+
+
+}

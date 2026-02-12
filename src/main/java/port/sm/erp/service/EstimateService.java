@@ -38,24 +38,24 @@ public class EstimateService {
                 //👉 견적서 안의 라인 DTO 리스트 만들기
                 e.getLines().stream()//👉 견적서에 속한 라인 목록 가져오기
                         .map(l -> new EstimateLineResponse(//👉 라인 하나를 DTO로 변환
-l.getId(),
-l.getItemName(),
-l.getQty(),
-l.getPrice(),
-l.getAmount(),
-l.getRemark() //👉 엔티티 값 → DTO 필드로 복사
-))
-.toList(); //👉 라인 DTO 리스트 완성
+                                l.getId(),
+                                l.getItemName(),
+                                l.getQty(),
+                                l.getPrice(),
+                                l.getAmount(),
+                                l.getRemark() //👉 엔티티 값 → DTO 필드로 복사
+                        ))
+                        .toList(); //👉 라인 DTO 리스트 완성
 
-return new EstimateResponse(//👉 견적서 정보 + 라인 리스트 전달
-        e.getId(),
-        e.getEstimateNo(),
-        e.getEstimateDate(),
-        e.getCustomerName(),
-        e.getRemark(),
-        lines
-);
-}
+        return new EstimateResponse(//👉 견적서 정보 + 라인 리스트 전달
+                e.getId(),
+                e.getEstimateNo(),
+                e.getEstimateDate(),
+                e.getCustomerName(),
+                e.getRemark(),
+                lines
+        );
+    }
 
     //단건 id로 db조회
     @Transactional(readOnly = true)
@@ -100,8 +100,8 @@ return new EstimateResponse(//👉 견적서 정보 + 라인 리스트 전달
     public void update(Long id, EstimateRequest req) { //👉 기존 견적서 수정
         Estimate e = estimateRepository.findById(id) //👉 수정할 견적서 조회
                 .orElseThrow(() -> new RuntimeException("견적서 없음"));
-    e.getLines().clear();
-    apply(e, req);
+        e.getLines().clear();
+        apply(e, req);
     }
 
     //삭제

@@ -40,8 +40,8 @@ public class JournalLine {
     /** 거래 */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMERS") // DB 컬럼명도 통일
-    private Customer customer;
+    @JoinColumn(name = "TRADE_ID", insertable = false, updatable = false)
+    private Trade trade;
 
 
     public JournalLine() {}

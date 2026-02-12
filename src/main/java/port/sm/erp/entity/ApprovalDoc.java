@@ -1,6 +1,9 @@
 package port.sm.erp.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,20 +12,18 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
         name = "APPROVAL_DOC",
-        indexes = {
-                @Index(name = "idx_APR_DOC_DRAFT_DATE", columnList = "DRAFT_DATE"),
-                @Index(name = "idx_APR_DOC_STATUS", columnList = "STATUS"),
-                @Index(name = "idx_APR_DOC_DRAFTER_ID", columnList = "DRAFTER_ID"),
-                @Index(name = "idx_APR_DOC_APPROVER_ID", columnList = "APPROVER_ID")
+        indexes ={
+                @Index(name = "IDX_APR_DOC_DRAFT_DATE", columnList = "DRAFT_DATE"),
+                @Index(name = "IDX_APR_DOC_STATUS", columnList = "STATUS"),
+                @Index(name = "IDX_APR_DOC_DRAFTER_ID", columnList = "DRAFTER_ID"),
+                @Index(name = "IDX_APR_DOC_APPROVER_ID", columnList = "APPROVER_ID"),
         }
 )
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-
 public class ApprovalDoc {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

@@ -30,11 +30,11 @@ import port.sm.erp.service.CalendarEventService;
 @CrossOrigin(origins = "http://localhost:5173")
 public class CalendarEventController {
 
-	private static final Logger log = LoggerFactory.getLogger(CalendarEventController.class);
+    private static final Logger log = LoggerFactory.getLogger(CalendarEventController.class);
 
-	
+
     //private final CalendarEventRepository repo;
-	private final CalendarEventService eventService;
+    private final CalendarEventService eventService;
     private final MemberRepository memberRepo;
 
     public CalendarEventController(CalendarEventService eventService, MemberRepository memberRepo) {
@@ -61,14 +61,14 @@ public class CalendarEventController {
 
         return eventService.list(currentUserId(), from, to);
     }
-    
- // ✅ 일정 상세 조회 (id)
+
+    // ✅ 일정 상세 조회 (id)
     @GetMapping("/{id}")
     public CalendarEvent get(@PathVariable Long id) {
         return eventService.get(currentUserId(), id);
     }
 
-    
+
     // ========================
     // 일정 추가
     // ========================
@@ -86,7 +86,7 @@ public class CalendarEventController {
     public CalendarEvent update(@PathVariable Long id, @RequestBody CalendarEvent body) {
         return eventService.update(currentUserId(), id, body);
     }
-    
+
     // ========================
     // 일정 삭제
     // ========================
@@ -104,8 +104,8 @@ public class CalendarEventController {
         log.error("AUTH = {}", auth);
         log.error("PRINCIPAL = {}", auth == null ? null : auth.getPrincipal());
         log.error("PRINCIPAL_CLASS = {}", (auth == null || auth.getPrincipal() == null) ? null : auth.getPrincipal().getClass());
-        
-        
+
+
         if (auth == null || !auth.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 필요");
         }

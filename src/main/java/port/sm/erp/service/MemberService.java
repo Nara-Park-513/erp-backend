@@ -63,7 +63,7 @@ public class MemberService {
     }
 
     /**
-    단일회원조회
+     단일회원조회
      */
     public Member getMemberById(Long id) {
         return memberRepository.findById(id)
@@ -73,7 +73,7 @@ public class MemberService {
     }
 
     /**
-    회원삭제
+     회원삭제
      */
     @Transactional
     public void deleteMember(Long id) {
@@ -82,11 +82,11 @@ public class MemberService {
         }
         memberRepository.deleteById(id);
     }
-    
+
     //login
     public Member login(String email, String password) {
         Member member = memberRepository.findByEmail(email.trim())
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일"));
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일"));
 
         boolean ok = passwordEncoder.matches(password, member.getPassword());
         System.out.println("✅ [SERVICE] matches=" + ok);
@@ -95,12 +95,12 @@ public class MemberService {
         return member;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
 }

@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import port.sm.erp.entity.ItemFieldDefinition;
 
 public interface ItemFieldDefinitionRepository extends JpaRepository<ItemFieldDefinition, Long> {
-	
-	Optional<ItemFieldDefinition> findByFieldKey(String fieldKey); //단건조회
-	
-	boolean existsByFieldKey(String fieldKey);//존재여부 확인
-	
-	//사용중인(또는 전체)정의 목록
-	List<ItemFieldDefinition> findByUseYnOrderByIdAsc(String useYn);//사용 여부로 목록 조회 + 정렬
+
+    Optional<ItemFieldDefinition> findByFieldKey(String fieldKey); //단건조회
+
+    boolean existsByFieldKey(String fieldKey);//존재여부 확인
+
+    //사용중인(또는 전체)정의 목록
+    List<ItemFieldDefinition> findByUseYnOrderByIdAsc(String useYn);//사용 여부로 목록 조회 + 정렬
 
 }

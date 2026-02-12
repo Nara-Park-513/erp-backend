@@ -8,28 +8,28 @@ import lombok.*;
 
 @Entity
 @Table(
-name ="INV_ITEM_FIELD_DEF",
-			uniqueConstraints = {
-					@UniqueConstraint(name="UK_INV_ITEM_FIELD_KEY", columnNames="FIELD_KEY")	
-			}
-		)
+        name ="INV_ITEM_FIELD_DEF",
+        uniqueConstraints = {
+                @UniqueConstraint(name="UK_INV_ITEM_FIELD_KEY", columnNames="FIELD_KEY")
+        }
+)
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ItemFieldDefinition {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
-	private Long id;
-	
-	@Column(name="FIELD_KEY", nullable=false, length=80)
-	private String fieldKey;
-	
-	//add
-	@Column(name = "LABEL", length = 100)
-	private String label;
-	
+    @Column(name="ID")
+    private Long id;
+
+    @Column(name="FIELD_KEY", nullable=false, length=80)
+    private String fieldKey;
+
+    //add
+    @Column(name = "LABEL", length = 100)
+    private String label;
+
     // TEXT / NUMBER / DATE 등
     @Column(name="FIELD_TYPE", nullable=false, length=20)
     @Builder.Default
@@ -38,5 +38,5 @@ public class ItemFieldDefinition {
     @Column(name="USE_YN", nullable=false, length=1)
     @Builder.Default
     private String useYn = "Y";
-	
+
 }

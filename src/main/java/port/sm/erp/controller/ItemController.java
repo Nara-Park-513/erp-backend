@@ -28,56 +28,56 @@ import port.sm.erp.service.ItemService;
 @RequestMapping("/api/inv/items")
 @CrossOrigin(origins = "http://localhost:5173") // 프론트 주소 맞게 수정
 public class ItemController {
-	
-/*실제 비즈니스 로직은 ItemService가 담당 컨트롤러는 요청 → 서비스 호출 → 결과 반환만 담당
-역활분리
-*/	
-	 private final ItemService itemService;
 
-	    /**
-	     * 목록 조회
-	     * 예) /api/inv/items?q=볼트&includeStopped=false&page=0&size=10&sortKey=itemCode&dir=asc
-	     */
-	    @GetMapping
-	    public Page<ItemResponse> list(
-@RequestParam(name = "q", required = false) String q,
-@RequestParam(name = "includeStopped", defaultValue = "false") boolean includeStopped,
-@RequestParam(name = "page", defaultValue = "0") int page,
-@RequestParam(name = "size", defaultValue = "10") int size,
-@RequestParam(name = "sortKey", required = false) String sortKey,
-@RequestParam(name = "dir", defaultValue = "asc") String dir
-	    ) {
-	        return itemService.list(q, includeStopped, page, size, sortKey, dir);
-	    }
-	    
-	    
+    /*실제 비즈니스 로직은 ItemService가 담당 컨트롤러는 요청 → 서비스 호출 → 결과 반환만 담당
+    역활분리
+    */
+    private final ItemService itemService;
 
-	    /** 단건 조회 */
-	    @GetMapping("/{id}")
-	    public ItemResponse get(@PathVariable Long id) {
-	        return itemService.get(id);
-	    }
+    /**
+     * 목록 조회
+     * 예) /api/inv/items?q=볼트&includeStopped=false&page=0&size=10&sortKey=itemCode&dir=asc
+     */
+    @GetMapping
+    public Page<ItemResponse> list(
+            @RequestParam(name = "q", required = false) String q,
+            @RequestParam(name = "includeStopped", defaultValue = "false") boolean includeStopped,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sortKey", required = false) String sortKey,
+            @RequestParam(name = "dir", defaultValue = "asc") String dir
+    ) {
+        return itemService.list(q, includeStopped, page, size, sortKey, dir);
+    }
 
-	    /** 등록 */
-	    @PostMapping
-	    public ItemResponse create(@RequestBody ItemRequest req) {
-	        return itemService.create(req);
-	    }
 
-	    /** 수정 */
-	    @PutMapping("/{id}")
-	    public ItemResponse update(@PathVariable Long id, @RequestBody ItemRequest req) {
-	        return itemService.update(id, req);
-	    }
 
-	    /** 삭제 */
-	    @DeleteMapping("/{id}")
-	    public void delete(@PathVariable Long id) {
-	        itemService.delete(id);
-	    }
+    /** 단건 조회 */
+    @GetMapping("/{id}")
+    public ItemResponse get(@PathVariable Long id) {
+        return itemService.get(id);
+    }
+
+    /** 등록 */
+    @PostMapping
+    public ItemResponse create(@RequestBody ItemRequest req) {
+        return itemService.create(req);
+    }
+
+    /** 수정 */
+    @PutMapping("/{id}")
+    public ItemResponse update(@PathVariable Long id, @RequestBody ItemRequest req) {
+        return itemService.update(id, req);
+    }
+
+    /** 삭제 */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        itemService.delete(id);
+    }
 	    
 /*
 @PathVariable 이란?
 URL 경로(path)에 들어있는 값을 꺼내서 변수에 넣어주는 어노테이션
-*/	    
+*/
 }

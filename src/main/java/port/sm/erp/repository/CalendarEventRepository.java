@@ -13,14 +13,14 @@ import port.sm.erp.entity.CalendarEvent;
 //sql을 직접 안써도 저장,조회,삭제를 할수 있게 해주는 JPA인터 페이스
 //DB의 calendar_event 테이블을 자바 코드로 다루기 위한 창구
 public interface CalendarEventRepository extends JpaRepository<CalendarEvent, Long>{
-List<CalendarEvent> findByUserIdAndDateBetween(Long userId, LocalDate from, LocalDate to);	
-	
-Optional<CalendarEvent> findByIdAndUserId(Long id, Long userId);
+    List<CalendarEvent> findByUserIdAndDateBetween(Long userId, LocalDate from, LocalDate to);
 
-List<CalendarEvent> findByUserIdAndDateBetweenOrderByDateAsc(Long userId, LocalDate from, LocalDate to);
+    Optional<CalendarEvent> findByIdAndUserId(Long id, Long userId);
 
-//List<CalendarEvent> findSharedWithUser(Long userId, LocalDate from, LocalDate to);
-@Query("""
+    List<CalendarEvent> findByUserIdAndDateBetweenOrderByDateAsc(Long userId, LocalDate from, LocalDate to);
+
+    //List<CalendarEvent> findSharedWithUser(Long userId, LocalDate from, LocalDate to);
+    @Query("""
 		  select distinct e
 		  from CalendarEvent e
 		  join e.sharers s
@@ -28,14 +28,14 @@ List<CalendarEvent> findByUserIdAndDateBetweenOrderByDateAsc(Long userId, LocalD
 		    and e.date between :from and :to
 		  order by e.date asc
 		""")
-		List<CalendarEvent> findSharedWithUser(
-		        @Param("userIdStr") String userIdStr,
-		        @Param("from") LocalDate from,
-		        @Param("to") LocalDate to
-		);
+    List<CalendarEvent> findSharedWithUser(
+            @Param("userIdStr") String userIdStr,
+            @Param("from") LocalDate from,
+            @Param("to") LocalDate to
+    );
 
 
-	
+
 }
 //핵심은 이한줄 extends JpaRepository<CalendarEvent, Long> 이 모든 기능이 자동으로 생긴다
 /*

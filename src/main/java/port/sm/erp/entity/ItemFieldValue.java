@@ -6,16 +6,16 @@ import lombok.*;
 
 @Entity
 @Table(
-    name="INV_ITEM_FIELD_VAL",
-    uniqueConstraints = {
-        @UniqueConstraint(
-            name="UK_INV_ITEM_FIELD_VAL",
-            columnNames={"ITEM_ID","FIELD_DEF_ID"}
-        )
-    },
-    indexes = {
-        @Index(name="IDX_INV_ITEM_FIELD_VAL_ITEM", columnList="ITEM_ID")
-    }
+        name="INV_ITEM_FIELD_VAL",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name="UK_INV_ITEM_FIELD_VAL",
+                        columnNames={"ITEM_ID","FIELD_DEF_ID"}
+                )
+        },
+        indexes = {
+                @Index(name="IDX_INV_ITEM_FIELD_VAL_ITEM", columnList="ITEM_ID")
+        }
 )
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -29,17 +29,17 @@ public class ItemFieldValue {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name="ITEM_ID",
-        nullable=false,
-        foreignKey=@ForeignKey(name="FK_INV_ITEM_FIELD_VAL_ITEM")
+            name="ITEM_ID",
+            nullable=false,
+            foreignKey=@ForeignKey(name="FK_INV_ITEM_FIELD_VAL_ITEM")
     )
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name="FIELD_DEF_ID",
-        nullable=false,
-        foreignKey=@ForeignKey(name="FK_INV_ITEM_FIELD_VAL_DEF")
+            name="FIELD_DEF_ID",
+            nullable=false,
+            foreignKey=@ForeignKey(name="FK_INV_ITEM_FIELD_VAL_DEF")
     )
     private ItemFieldDefinition fieldDef;
 

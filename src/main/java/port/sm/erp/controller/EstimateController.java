@@ -36,7 +36,7 @@ public class EstimateController {
     //견적서 수정
     @PutMapping("/{id}")
     public void update(
-@PathVariable Long id, @RequestBody EstimateRequest request
+            @PathVariable Long id, @RequestBody EstimateRequest request
     ){
         estimateService.update(id, request);
     }

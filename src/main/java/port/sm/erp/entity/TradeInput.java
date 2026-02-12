@@ -10,37 +10,34 @@ import java.time.LocalDate;
         name = "TRADE_INPUT",
         indexes = {
                 @Index(name = "IDX_SI2_TRADE", columnList = "TRADE_ID"),
-                @Index(name = "IDX_SI2_DATE", columnList = "TRADE_DATE")
+                @Index(name = "IDX_SI2_DATE", columnList = "TRADE_DATE"),
         }
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class TradeInput {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    //기존 트레이드와 1:1 연결
+    //기존 trade와 1대 1연결
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TRADE_ID", nullable = false, unique = true)
     private Trade trade;
 
-    @Column(name = "TRADE_DATE", nullable = false)
+    @Column(name ="TRADE_DATE", nullable = false)
     private LocalDate tradeDate;
 
-    @Column(name = "DELIVERY_DATE")
+    @Column(name ="DELIVERY_DATE")
     private LocalDate deliveryDate;
 
-    @Column(name = "DELIVERY_ADDRESS", length = 300)
+    @Column(name ="DELIVERY_ADDRESS", length = 300)
     private String deliveryAddress;
 
-    @Column(name = "CONTACT_TEL", length = 50)
+    @Column(name ="CONTACT_TEL", length = 50)
     private String contactTel;
 
-    @Column(name = "REMARK", length = 500)
+    @Column(name ="REMARK", length = 500)
     private String remark;
+
 }

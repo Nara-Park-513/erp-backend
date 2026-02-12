@@ -17,13 +17,13 @@ import port.sm.erp.entity.ItemType;
 @Builder
 public class ItemResponse {
 
-	private Long id;
-	
-private String itemCode, itemName, itemGroup, spec, specMode, unit, barcode, process, imageUrl;
-private ItemType itemType;
-private BigDecimal inPrice, outPrice;
-private boolean inVatIncluded, outVatIncluded, useYn, isSet;
-private Map<String, String> extraFields;
+    private Long id;
+
+    private String itemCode, itemName, itemGroup, spec, specMode, unit, barcode, process, imageUrl;
+    private ItemType itemType;
+    private BigDecimal inPrice, outPrice;
+    private boolean inVatIncluded, outVatIncluded, useYn, isSet;
+    private Map<String, String> extraFields;
 
 
 

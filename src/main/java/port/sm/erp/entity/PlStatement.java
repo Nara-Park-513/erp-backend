@@ -11,14 +11,11 @@ import java.util.List;
 @Entity
 @Table(
         name = "PL_STATEMENT", indexes = {
-                @Index(name = "IDX_PL_PERIOD", columnList = "PERIOD_FROM, PERIOD_TO")
+        @Index(name ="IDX_PL_PERIOD", columnList = "PERIOD_FROM, PERIOD_TO")
 }
 )
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 @Builder
 public class PlStatement {
 
@@ -34,13 +31,15 @@ public class PlStatement {
     private LocalDate periodTo;
 
     @Column(name = "GENERATED_AT", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDateTime generated_At;
+    private LocalDateTime generatedAt;
 
     //작업자 기존 멤버에서 재사용
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "MEMBER_ID")
+    @JoinColumn(name ="USER_ID", referencedColumnName = "MEMBER_ID")
     private Member user;
 
     @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlStatementLine> lines = new ArrayList<>();
+
+
 }

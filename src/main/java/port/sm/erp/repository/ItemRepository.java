@@ -13,12 +13,12 @@ import port.sm.erp.entity.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificationExecutor<Item>{
 
-Optional<Item> findByItemCode(String itemCode);//item_code컬럼이 같은 데이터를 조회 값이 없을수도 있으니까 null방지
-//품목코드 존재여부 확인
-boolean existsByItemCode(String itemCode);	
+    Optional<Item> findByItemCode(String itemCode);//item_code컬럼이 같은 데이터를 조회 값이 없을수도 있으니까 null방지
+    //품목코드 존재여부 확인
+    boolean existsByItemCode(String itemCode);
 
-//조회할때 편하게 하기위해 쿼리를 만듬
-@Query("""
+    //조회할때 편하게 하기위해 쿼리를 만듬
+    @Query("""
 select i from Item i
 where (:includeStopped = true or i.useYn = 'Y')
   and ((:q is null) or (:q = '') 
@@ -26,7 +26,7 @@ where (:includeStopped = true or i.useYn = 'Y')
        or lower(i.itemName) like lower(concat('%', :q, '%'))
        or lower(i.barcode) like lower(concat('%', :q, '%')))
 """)
-Page<Item> search(@Param("q") String q, @Param("includeStopped") boolean includeStopped, Pageable pageable);
+    Page<Item> search(@Param("q") String q, @Param("includeStopped") boolean includeStopped, Pageable pageable);
 
 }
 
