@@ -95,6 +95,8 @@ public class SecurityJwtConfig {
                 .authorizeRequests()
                 // ✅ 프리플라이트 허용
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // 🔽 이 한 줄이면 모든 API 허용
+                .antMatchers("/api/**").permitAll()
 
                 // ✅ 인증 없이 허용할 엔드포인트들
                 .antMatchers(HttpMethod.POST, "/members", "/members/login", "/members/register").permitAll()
@@ -108,10 +110,15 @@ public class SecurityJwtConfig {
                 // 거래처/거래 API
                 .antMatchers("/api/acc/customers/**").permitAll()
                 .antMatchers("/api/acc/trades/**").permitAll()
+                .antMatchers("/api/stock/**").permitAll()
 
                 // 일반전표 API (원하면 막아도 됨)
                 .antMatchers("/api/acc/journals/**").permitAll()
                 .antMatchers("/api/sales/sales/**").permitAll()
+                .antMatchers("/api/acc/trades/**").permitAll()
+                .antMatchers("/api/sales/**").permitAll()
+                .antMatchers("/api/approval/**").permitAll()
+
 
 
                 .anyRequest().authenticated()

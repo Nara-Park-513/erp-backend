@@ -89,10 +89,10 @@ public class Trade {
     private Member user;
 
     // ✅ 양방향 관계면 직렬화 무한루프 방지 필요
-    @JsonManagedReference
+    /*@JsonManagedReference
     @OneToMany(mappedBy = "trade", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<JournalLine> lines = new ArrayList<>();
+    private List<JournalLine> lines = new ArrayList<>();*/
 
     @OneToMany(mappedBy = "trade", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<TradeLine> tradeLines = new java.util.ArrayList<>();

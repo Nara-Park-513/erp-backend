@@ -40,9 +40,11 @@ public class JournalService {
             for (JournalLine line : journal.getLines()) {
                 line.setId(null);
                 line.setJournal(journal);
+                if (line.getCustomer() != null) {
+                    line.setCustomer(line.getCustomer());
+                }
             }
         }
-
         Journal saved = journalRepository.save(journal);
         return toDto(saved);
     }
@@ -64,6 +66,9 @@ public class JournalService {
             for (JournalLine line : req.getLines()) {
                 line.setId(null);
                 line.setJournal(j);
+                if (line.getCustomer() != null) {
+                    line.setCustomer(line.getCustomer());
+                }
                 j.getLines().add(line);
             }
         }
@@ -85,9 +90,12 @@ public class JournalService {
                 .map(l -> JournalLineResponseDTO.builder()
                         .id(l.getId())
                         .accountCode(l.getAccountCode())
+                        .accountName(l.getAccountName())
                         .dcType(l.getDcType() == null ? null : l.getDcType().name())
                         .amount(l.getAmount())
                         .lineRemark(l.getLineRemark())
+                        .customerId(l.getCustomer() == null ? null : l.getCustomer().getId())
+                        .customerName(l.getCustomer() == null ? null : l.getCustomer().getCustomerName())
                         .build())
                 .toList();
 
