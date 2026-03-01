@@ -1,72 +1,96 @@
 # ERP Backend API Server
 
-기업 내부 업무 프로세스를 관리하기 위한 **ERP(Enterprise Resource Planning) 백엔드 REST API 서버**입니다.
+기업 내부 업무 프로세스를 관리하기 위한 **ERP(Enterprise Resource Planning) 백엔드 REST API 서버**입니다.  
+실제 ERP 시스템 구조를 참고하여 단순한 CRUD를 넘어 도메인 분리·인증/보안·확장성을 고려한 API 설계에 중점을 두고 구현했습니다.  
+본 API 서버는 ERP 프론트엔드 애플리케이션과의 연동을 전제로 설계되었습니다. :contentReference[oaicite:0]{index=0}
 
-실제 ERP 시스템 구조를 참고하여 단순 CRUD 구현을 넘어, **도메인 분리·인증/보안·확장성을 고려한 API 설계**를 목표로 개발했습니다.
+---
 
-본 API 서버는 ERP 프론트엔드 애플리케이션과의 연동을 전제로 설계되었으며, 인증·권한·도메인 구조를 중심으로 안정적인 백엔드 아키텍처 구현에 집중했습니다.
+## 📌 기술 스택
 
----------------------------------------------------------------------------------------------------------------------------
+- **Language:** Java 21
+- **Framework:** Spring Boot
+- **Security:** Spring Security + JWT
+- **ORM:** JPA (Hibernate)
+- **Build Tool:** Gradle
+- **Database:** MariaDB (Local), MySQL (Production) :contentReference[oaicite:1]{index=1}
 
-## Tech Stack
+---
 
-- Java 21
-- Spring Boot
-- Spring Security + JWT
-- JPA (Hibernate)
-- Gradle
-- MariaDB (Local) / MySQL (Production)
+## 🛠 주요 기능
 
----------------------------------------------------------------------------------------------------------------------------
+- 도메인 중심의 REST API 설계
+- JWT Access Token 기반 인증 / 인가 처리
+- 사용자 권한(Role) 기반 접근 제어
+- Spring Security Filter 기반 요청 검증
+- 공통 예외 처리(Global Exception Handler)
+- 일관된 API 응답 포맷 구성
+- 도메인 단위 패키지 분리 구조 :contentReference[oaicite:2]{index=2}
 
-## Project Focus
+---
 
-- 실무 ERP 구조를 고려한 **도메인 중심 백엔드 설계**
-- JWT 기반 인증/인가 흐름 구현
-- Spring Security Filter를 활용한 요청 검증
-- 유지보수성과 확장성을 고려한 패키지 구조 설계
-- 공통 예외 처리 및 일관된 API 응답 포맷 구성
+## 📁 주요 도메인
 
----------------------------------------------------------------------------------------------------------------------------
+- 사용자 인증 및 권한 관리
+- 주문 관련 API
+- 자재/재고 관련 API
+- 생산/출고 흐름 API
+- 공통 예외 및 응답 표준화 :contentReference[oaicite:3]{index=3}
 
-## Key Features
+---
 
-- ERP 도메인 기반 REST API 설계
-- JWT Access Token 기반 인증 처리
-- 사용자 권한(Role)에 따른 접근 제어
-- Access Token 중심의 인증 구조 설계 (확장 가능 구조)
-- 공통 Exception Handler를 통한 에러 응답 표준화
-- 도메인 단위 패키지 분리를 통한 코드 가독성 및 확장성 확보
+## 🚀 설치 및 실행 방법
 
----------------------------------------------------------------------------------------------------------------------------
+### 1. 저장소 클론
 
-## Problem Solving
+```bash
+git clone https://github.com/Nara-Park-513/erp-backend.git
+cd erp-backend
+2. 환경 설정
 
-- **JWT 인증/인가 흐름 안정화**  
-  Access Token 만료 이후 인증 오류 및 요청 처리 혼선을 경험하며,  
-  Spring Security Filter 기반 토큰 검증 흐름으로 인증 구조를 재정비했습니다.
+application.properties 또는 application.yml 파일에 데이터베이스 및 JWT 설정을 추가합니다.
 
-- **도메인 중심 패키지 구조 리팩토링**  
-  초기 기능 중심 패키지 구조에서 발생한 수정 범위 확산 문제를 해결하기 위해,  
-  회원·주문·자재 등 도메인 단위 패키지 구조로 재설계했습니다.
+예시:
 
-- **공통 예외 처리 및 응답 포맷 통합**  
-  인증/검증/비즈니스 예외가 각각 다르게 응답되던 문제를 개선하여,  
-  Global Exception Handler를 통해 일관된 API 응답 구조를 구성했습니다.
+spring.datasource.url=jdbc:mysql://localhost:3306/erp
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+jwt.secret=your_jwt_secret
+3. 의존성 설치 및 빌드
+./gradlew clean build
+4. 실행
+./gradlew bootRun
 
----------------------------------------------------------------------------------------------------------------------------
+기본 실행 포트는 http://localhost:8080 입니다.
 
-## Portfolio Highlights
+🔐 인증 및 권한 흐름
 
-- 단순 CRUD를 넘어서 **실제 ERP 환경을 가정한 백엔드 구조 설계**
-- 인증·보안·예외 처리 등 실무 필수 요소 직접 구현
-- 도메인 중심 설계를 통한 유지보수성과 확장성 확보
-- GitHub 기반 형상 관리 및 프로젝트 운영 경험
+로그인 시 JWT Access Token 발급
 
----------------------------------------------------------------------------------------------------------------------------
+Spring Security Filter를 통한 토큰 검증
 
-## Developer
+Role 기반 접근 제어 적용
 
-이기창  
-ERP / MES 도메인 기반 백엔드 시스템 개발  
-Spring Boot · JPA · JWT 중심의 프로젝트 설계 및 구현
+인증 오류 및 예외는 Global Exception Handler로 일관된 응답 처리
+
+🧠 설계 의도
+
+단순 CRUD 중심이 아닌 실제 ERP 환경을 가정한 백엔드 아키텍처
+
+유지보수성과 확장성을 고려한 도메인 구조
+
+인증/인가, 보안, 예외 처리 등 실무 필수 요소 반영
+
+📌 향후 개선 예정
+
+API 문서 자동화(Swagger/OpenAPI) 도입
+
+통합 테스트 자동화
+
+운영 환경 배포 자동화(CI/CD)
+
+토큰 리프레시 & 세션 관리 개선
+
+📜 라이선스
+
+본 프로젝트는 포트폴리오 목적의 학습용 프로젝트입니다.
