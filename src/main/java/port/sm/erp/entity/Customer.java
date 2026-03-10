@@ -8,22 +8,42 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CUSTOMERS")  // 오라클에서 대문자로 테이블 이름 지정
+@Table(name = "CUSTOMERS")
 @Getter
 @Setter
-@NoArgsConstructor //기본 생성자
-@AllArgsConstructor //모든 필드를 받는 생성자
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
-    @Id //기본키
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 일반 컬럼들
     @Column(length = 200, nullable = false)
-    private String customerCode, customerName, ceoName, phone, email, address, remark, detailAddress;
+    private String customerCode;
 
+    @Column(length = 200, nullable = false)
+    private String customerName;
+
+    @Column(length = 200)
+    private String ceoName;
+
+    @Column(length = 200)
+    private String phone;
+
+    @Column(length = 200)
+    private String email;
+
+    @Column(length = 200)
+    private String address;
+
+    @Column(length = 200)
+    private String detailAddress;
+
+    @Column(length = 200)
+    private String remark;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CustomerType customerType;
 }
