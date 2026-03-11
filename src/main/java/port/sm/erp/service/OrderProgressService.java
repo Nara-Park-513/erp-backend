@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import port.sm.erp.entity.OrderProgress;
 import port.sm.erp.repository.OrderProgressRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -22,20 +24,25 @@ public class OrderProgressService {
      */
     public OrderProgress create(OrderProgress orderProgress) {
 
-        // ✅ 오더번호가 없으면 자동 생성
+        // 오더번호가 없으면 자동 생성
         if (orderProgress.getOrderNo() == null || orderProgress.getOrderNo().isBlank()) {
-
-            Long seq = orderProgressRepository.getNextOrderNoSequence();
-
-            String year = String.valueOf(java.time.Year.now().getValue());
-
-            String orderNo = String.format("ord-%s-%04d", year, seq);
-
-            orderProgress.setOrderNo(orderNo);
+            orderProgress.setOrderNo(generateOrderNo());
         }
 
-        orderProgress.setStatus("ACTIVE");
+        if (orderProgress.getStatus() == null || orderProgress.getStatus().isBlank()) {
+            orderProgress.setStatus("ACTIVE");
+        }
+
         return orderProgressRepository.save(orderProgress);
+    }
+
+    /**
+     * 오더번호 생성
+     */
+    private String generateOrderNo() {
+        String date = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        long millis = System.currentTimeMillis() % 100000;
+        return String.format("ord-%s-%05d", date, millis);
     }
 
     /**
