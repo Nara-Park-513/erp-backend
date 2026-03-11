@@ -1,12 +1,11 @@
 package port.sm.erp.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-public class JournalLineResponseDTO {
-    private Long id;
+@Setter
+public class JournalLineSaveRequest {
     private String accountCode;
     private String accountName;
     private String dcType;
