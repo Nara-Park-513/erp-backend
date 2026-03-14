@@ -101,11 +101,27 @@ public class OrderProgressService {
     public void update(Long id, OrderProgress request) {
         OrderProgress entity = getById(id);
 
-        entity.setOrderNo(request.getOrderNo());
-        entity.setOrderName(request.getOrderName());
-        entity.setProgressText(request.getProgressText());
-        entity.setStatus(request.getStatus());
-        entity.setMember(request.getMember());
+        if (request.getOrderNo() != null && !request.getOrderNo().isBlank()) {
+            entity.setOrderNo(request.getOrderNo());
+        }
+
+        if (request.getOrderName() != null) {
+            entity.setOrderName(request.getOrderName());
+        }
+
+        if (request.getProgressText() != null) {
+            entity.setProgressText(request.getProgressText());
+        }
+
+        // status는 프론트에서 안 보내면 기존값 유지
+        if (request.getStatus() != null && !request.getStatus().isBlank()) {
+            entity.setStatus(request.getStatus());
+        }
+
+        // member도 값이 넘어왔을 때만 변경
+        if (request.getMember() != null) {
+            entity.setMember(request.getMember());
+        }
     }
 
     /**
