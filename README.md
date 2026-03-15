@@ -35,8 +35,7 @@ Spring Boot 기반으로 구현되었으며,
 - Gradle
 
 ### Database
-- MariaDB (Local)
-- MySQL (Production)
+- MariaDB
 
 ### Authentication / Security
 - JWT Access Token 기반 인증
