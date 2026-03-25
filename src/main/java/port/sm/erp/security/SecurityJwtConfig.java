@@ -99,7 +99,7 @@ public class SecurityJwtConfig {
                 .antMatchers("/api/**").permitAll()
 
                 // ✅ 인증 없이 허용할 엔드포인트들
-                .antMatchers(HttpMethod.POST, "/members", "/members/login", "/members/register").permitAll()
+                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/api/events/**", "/api/inv/items").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/sales/estimates/**").permitAll()

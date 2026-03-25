@@ -3,7 +3,7 @@ package port.sm.erp.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Getter
 @Builder
@@ -15,6 +15,6 @@ public class OrderProgressResponse {
     private String progressText;
     private String status;
     private Long memberId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 }

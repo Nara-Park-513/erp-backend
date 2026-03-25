@@ -95,7 +95,29 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
+    public Member findOrCreateGoogleMember(String providerId, String email, String name) {
+        return memberRepository.findByProviderAndProviderId("google", providerId)
+                .orElseGet(() -> {
+                    Member member = Member.builder()
+                            .firstName(name != null ? name : "Google")
+                            .lastName("User")
+                            .email(email)
+                            .username(email)
+                            .password(passwordEncoder.encode("google-social-login"))
+                            .companyName(null)
+                            .position(null)
+                            .tel(null)
+                            .gender("N")
+                            .address(null)
+                            .detailAddress(null)
+                            .provider("google")
+                            .providerId(providerId)
+                            .build();
 
+                    return memberRepository.save(member);
+                });
+    }
 
 
 

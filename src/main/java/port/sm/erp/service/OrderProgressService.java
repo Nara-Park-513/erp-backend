@@ -5,7 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import port.sm.erp.dto.OrderProgressRequest;
+import port.sm.erp.dto.OrderProgressResponse;
+import port.sm.erp.entity.Member;
 import port.sm.erp.entity.OrderProgress;
+import port.sm.erp.repository.MemberRepository;
 import port.sm.erp.repository.OrderProgressRepository;
 
 import java.time.LocalDate;
@@ -17,23 +21,36 @@ import java.util.List;
 @Transactional
 public class OrderProgressService {
 
+    private static final String ACTIVE = "ACTIVE";
+    private static final String DELETED = "DELETED";
+
     private final OrderProgressRepository orderProgressRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 등록
      */
-    public OrderProgress create(OrderProgress orderProgress) {
+    public OrderProgressResponse create(OrderProgressRequest request) {
+        OrderProgress entity = new OrderProgress();
 
-        // 오더번호가 없으면 자동 생성
-        if (orderProgress.getOrderNo() == null || orderProgress.getOrderNo().isBlank()) {
-            orderProgress.setOrderNo(generateOrderNo());
+        if (request.getOrderNo() == null || request.getOrderNo().isBlank()) {
+            entity.setOrderNo(generateOrderNo());
+        } else {
+            entity.setOrderNo(request.getOrderNo().trim());
         }
 
-        if (orderProgress.getStatus() == null || orderProgress.getStatus().isBlank()) {
-            orderProgress.setStatus("ACTIVE");
+        entity.setOrderName(request.getOrderName());
+        entity.setProgressText(request.getProgressText());
+        entity.setStatus(ACTIVE);
+
+        if (request.getMemberId() != null) {
+            Member member = memberRepository.findById(request.getMemberId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 작성자가 없습니다. memberId=" + request.getMemberId()));
+            entity.setMember(member);
         }
 
-        return orderProgressRepository.save(orderProgress);
+        OrderProgress saved = orderProgressRepository.save(entity);
+        return toResponse(saved);
     }
 
     /**
@@ -42,85 +59,103 @@ public class OrderProgressService {
     private String generateOrderNo() {
         String date = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
         long millis = System.currentTimeMillis() % 100000;
-        return String.format("ord-%s-%05d", date, millis);
+        return String.format("ORD-%s-%05d", date, millis);
     }
 
     /**
-     * ID로 단건 조회
+     * 전체 조회 (ACTIVE만)
      */
     @Transactional(readOnly = true)
-    public OrderProgress getById(Long id) {
-        return orderProgressRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 진행정보가 없습니다. id=" + id));
+    public List<OrderProgressResponse> getActiveList() {
+        return orderProgressRepository.findByStatus(ACTIVE)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**
-     * 오더관리번호로 단건 조회
+     * ID로 단건 조회 (ACTIVE만)
      */
     @Transactional(readOnly = true)
-    public OrderProgress getByOrderNo(String orderNo) {
-        return orderProgressRepository.findByOrderNo(orderNo)
+    public OrderProgressResponse getById(Long id) {
+        return toResponse(getActiveEntityById(id));
+    }
+
+    /**
+     * 오더번호로 단건 조회 (ACTIVE만)
+     */
+    @Transactional(readOnly = true)
+    public OrderProgressResponse getByOrderNo(String orderNo) {
+        OrderProgress entity = orderProgressRepository.findByOrderNoAndStatus(orderNo, ACTIVE)
                 .orElseThrow(() -> new IllegalArgumentException("해당 오더번호가 없습니다. orderNo=" + orderNo));
+        return toResponse(entity);
     }
 
     /**
      * 오더명 LIKE 검색 (List)
      */
     @Transactional(readOnly = true)
-    public List<OrderProgress> searchByOrderName(String keyword) {
-        return orderProgressRepository.findByOrderNameContaining(keyword);
+    public List<OrderProgressResponse> searchByOrderName(String keyword) {
+        return orderProgressRepository.findByOrderNameContainingAndStatus(keyword, ACTIVE)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**
-     * 오더명 LIKE 검색 (페이징)
+     * 오더명 LIKE 검색 (Page)
      */
     @Transactional(readOnly = true)
-    public Page<OrderProgress> searchByOrderName(String keyword, Pageable pageable) {
-        return orderProgressRepository.findByOrderNameContaining(keyword, pageable);
+    public Page<OrderProgressResponse> searchByOrderName(String keyword, Pageable pageable) {
+        return orderProgressRepository
+                .findByOrderNameContainingAndStatus(keyword, ACTIVE, pageable)
+                .map(this::toResponse);
     }
 
     /**
-     * 상태값으로 조회
+     * 진행상태 조회
      */
     @Transactional(readOnly = true)
-    public List<OrderProgress> getByStatus(String status) {
-        return orderProgressRepository.findByStatus(status);
+    public List<OrderProgressResponse> getByProgressText(String progressText) {
+        return orderProgressRepository.findByProgressTextAndStatus(progressText, ACTIVE)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**
      * 작성자 기준 조회
      */
     @Transactional(readOnly = true)
-    public List<OrderProgress> getByMemberId(Long memberId) {
-        return orderProgressRepository.findByMember_Id(memberId);
+    public List<OrderProgressResponse> getByMemberId(Long memberId) {
+        return orderProgressRepository.findByMember_IdAndStatus(memberId, ACTIVE)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     /**
-     * 수정 (Dirty Checking)
+     * 수정
      */
-    public void update(Long id, OrderProgress request) {
-        OrderProgress entity = getById(id);
+    public void update(Long id, OrderProgressRequest request) {
+        OrderProgress entity = getActiveEntityById(id);
 
         if (request.getOrderNo() != null && !request.getOrderNo().isBlank()) {
-            entity.setOrderNo(request.getOrderNo());
+            entity.setOrderNo(request.getOrderNo().trim());
         }
 
         if (request.getOrderName() != null) {
-            entity.setOrderName(request.getOrderName());
+            entity.setOrderName(request.getOrderName().trim());
         }
 
         if (request.getProgressText() != null) {
-            entity.setProgressText(request.getProgressText());
+            entity.setProgressText(request.getProgressText().trim());
         }
 
-        // status는 프론트에서 안 보내면 기존값 유지
-        if (request.getStatus() != null && !request.getStatus().isBlank()) {
-            entity.setStatus(request.getStatus());
-        }
-
-        // member도 값이 넘어왔을 때만 변경
-        if (request.getMember() != null) {
-            entity.setMember(request.getMember());
+        if (request.getMemberId() != null) {
+            Member member = memberRepository.findById(request.getMemberId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 작성자가 없습니다. memberId=" + request.getMemberId()));
+            entity.setMember(member);
         }
     }
 
@@ -128,7 +163,26 @@ public class OrderProgressService {
      * 삭제 (Soft Delete)
      */
     public void delete(Long id) {
-        OrderProgress entity = getById(id);
-        entity.setStatus("DELETED");
+        OrderProgress entity = getActiveEntityById(id);
+        entity.setStatus(DELETED);
+    }
+
+    @Transactional(readOnly = true)
+    protected OrderProgress getActiveEntityById(Long id) {
+        return orderProgressRepository.findByIdAndStatus(id, ACTIVE)
+                .orElseThrow(() -> new IllegalArgumentException("해당 진행정보가 없습니다. id=" + id));
+    }
+
+    private OrderProgressResponse toResponse(OrderProgress entity) {
+        return OrderProgressResponse.builder()
+                .id(entity.getId())
+                .orderNo(entity.getOrderNo())
+                .orderName(entity.getOrderName())
+                .progressText(entity.getProgressText())
+                .status(entity.getStatus())
+                .memberId(entity.getMember() != null ? entity.getMember().getId() : null)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
     }
 }

@@ -4,4 +4,4 @@ package port.sm.erp.entity;
 public enum StockTxnType {
     IN, OUT, ADJUST, RESERVE, RELEASE
 }
-//데이터 타입을 정해진 선택지로 잠가서 실수 못하게 하는 안전장치`
+//데이터 타입을 정해진 선택지로 잠가서 실수 못하게 하는 안전장치

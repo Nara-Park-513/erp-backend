@@ -2,18 +2,25 @@ package port.sm.erp.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter @Builder
+@Getter
+@Builder
 public class InventoryStockResponse {
 
-    private Long id, itemId, onHandQty, reservedQty, availableQty, safetyQty;
-    private String itemCode, itemName;
+    private Long id;
+    private Long itemId;
+    private Long onHandQty;
+    private Long reservedQty;
+    private Long availableQty;
+    private Long safetyQty;
+
+    private String itemCode;
+    private String itemName;
+
     private LocalDate lastMovedAt;
-    private LocalDateTime createdAt, updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

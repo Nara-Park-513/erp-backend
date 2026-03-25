@@ -35,6 +35,9 @@ public class MaterialOrder {
     @Column(name = "remark", length = 500)
     private String remark;
 
+    /**
+     * 발주요청 / 발주완료 / 입고대기 / 부분입고 / 입고완료 / 발주취소 / DELETED
+     */
     @Column(name = "status", length = 50)
     private String status;
 

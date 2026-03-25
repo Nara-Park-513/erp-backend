@@ -10,5 +10,5 @@ public class OrderProgressRequest {
     private String orderNo;
     private String orderName;
     private String progressText;
-    private Long memberId;   // FK는 ID만 받는게 정석
+    private Long memberId;
 }
